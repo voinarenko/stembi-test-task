@@ -1,4 +1,3 @@
-using Code.Infrastructure.AssetManagement;
 using Code.Infrastructure.Factory;
 using Code.Infrastructure.Loading;
 using Code.Infrastructure.States.Factory;
@@ -50,11 +49,8 @@ namespace Code.Infrastructure.Installers
     private void BindGameplayServices() =>
       Container.Bind<IStaticDataService>().To<StaticDataService>().AsSingle();
 
-    private void BindGameFactory()
-    {
-      Container.Bind<IAssets>().To<AssetProvider>().AsSingle();
+    private void BindGameFactory() =>
       Container.Bind<IGameFactory>().To<GameFactory>().AsSingle();
-    }
 
     private void BindStateMachine() =>
       Container.BindInterfacesAndSelfTo<GameStateMachine>().AsSingle();

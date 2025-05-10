@@ -16,11 +16,12 @@ namespace Code.StaticData
     }
 
     [SerializeField, Min(3)] private int _totalFigurines = 3;
-    [SerializeField] private List<GameObject> _shapes = new();
-    [SerializeField] private float _shapeScale = 0.3f;
-    [SerializeField] private List<Sprite> _icons = new();
-    [SerializeField] private float _iconScale = 0.1f;
-    [SerializeField] private List<Color> _colors = new();
+    public List<GameObject> Shapes = new();
+    public Vector3 ShapeScale = new(2, 2, 2);
+    public List<Sprite> Icons = new();
+    public Vector3 IconScale = new(0.5f, 0.5f, 0.5f);
+    public List<Color> Colors = new();
+    public float NextFigurineDelay = 0.5f;
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(LevelStaticData))]
@@ -33,14 +34,16 @@ namespace Code.StaticData
       private SerializedProperty _iconsProp;
       private SerializedProperty _iconScaleProp;
       private SerializedProperty _colorsProp;
+      private SerializedProperty _nextFigurineDelayProp;
 
       private void OnEnable()
       {
-        _shapesProp = serializedObject.FindProperty("_shapes");
-        _shapeScaleProp = serializedObject.FindProperty("_shapeScale");
-        _iconsProp = serializedObject.FindProperty("_icons");
-        _iconScaleProp = serializedObject.FindProperty("_iconScale");
-        _colorsProp = serializedObject.FindProperty("_colors");
+        _shapesProp = serializedObject.FindProperty("Shapes");
+        _shapeScaleProp = serializedObject.FindProperty("ShapeScale");
+        _iconsProp = serializedObject.FindProperty("Icons");
+        _iconScaleProp = serializedObject.FindProperty("IconScale");
+        _colorsProp = serializedObject.FindProperty("Colors");
+        _nextFigurineDelayProp = serializedObject.FindProperty("NextFigurineDelay");
       }
 
       public override void OnInspectorGUI()
@@ -89,6 +92,7 @@ namespace Code.StaticData
         EditorGUILayout.PropertyField(_iconsProp, true);
         EditorGUILayout.PropertyField(_iconScaleProp);
         EditorGUILayout.PropertyField(_colorsProp, true);
+        EditorGUILayout.PropertyField(_nextFigurineDelayProp);
 
         serializedObject.ApplyModifiedProperties();
       }

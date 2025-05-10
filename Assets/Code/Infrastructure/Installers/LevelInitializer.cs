@@ -1,4 +1,5 @@
 using Code.Infrastructure.Factory;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -6,7 +7,8 @@ namespace Code.Infrastructure.Installers
 {
   public class LevelInitializer : MonoBehaviour, IInitializable
   {
-    [SerializeField] private Transform _elementsContainer;
+    [SerializeField] private List<Transform> _dropPoints;
+    [SerializeField] private Transform _figurinesContainer;
     private IGameFactory _gameFactory;
 
     [Inject]
@@ -15,7 +17,8 @@ namespace Code.Infrastructure.Installers
 
     public void Initialize()
     {
-      _gameFactory.ElementsContainer = _elementsContainer;
+      _gameFactory.DropPoints = _dropPoints;
+      _gameFactory.ElementsContainer = _figurinesContainer;
     }
   }
 }
