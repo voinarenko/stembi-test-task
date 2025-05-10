@@ -2,8 +2,6 @@
 using Code.Infrastructure.States.StateMachine;
 using Code.Infrastructure.States.StatesInfrastructure;
 using Code.Services.StaticData;
-using DG.Tweening;
-using UnityEngine;
 
 namespace Code.Infrastructure.States.GameStates
 {
@@ -35,8 +33,7 @@ namespace Code.Infrastructure.States.GameStates
       _stateMachine.Enter<LoadProgressState>();
     }
 
-    private void LoadStaticData()
-    {
-    }
+    private void LoadStaticData() =>
+      _staticData.LoadLevel();
   }
 }

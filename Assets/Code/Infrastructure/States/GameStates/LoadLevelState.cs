@@ -6,17 +6,11 @@ using Code.Services.Input;
 using Code.Services.Progress;
 using Code.Services.Random;
 using Code.Services.StaticData;
-using Code.StaticData;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Code.Infrastructure.States.GameStates
 {
   public class LoadLevelState : IPayloadedState<string>
   {
-    private const string SceneNamePrefix = "Level";
     private readonly IGameStateMachine _stateMachine;
     private readonly ISceneLoader _sceneLoader;
     private readonly ILoadingCurtain _curtain;
