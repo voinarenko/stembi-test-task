@@ -2,6 +2,6 @@
 {
     public interface IInputService : IService
     {
-        InputSystem_Actions GetActions();
+        InputSystem_Actions Actions();
     }
 }

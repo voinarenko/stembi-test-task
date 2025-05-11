@@ -10,6 +10,6 @@
             _controls.Enable();
         }
         
-        public InputSystem_Actions GetActions() => _controls;
+        public InputSystem_Actions Actions() => _controls;
     }
 }

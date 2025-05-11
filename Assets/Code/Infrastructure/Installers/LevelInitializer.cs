@@ -1,4 +1,5 @@
 using Code.Infrastructure.Factory;
+using Code.Services.ItemsProcess;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -12,16 +13,21 @@ namespace Code.Infrastructure.Installers
     [SerializeField] private List<Transform> _dropPoints;
     [SerializeField] private Transform _actionBar;
     private IGameFactory _gameFactory;
+    private IInputProcessService _inputProcess;
 
     [Inject]
-    private void Construct(IGameFactory windowFactory) =>
-      _gameFactory = windowFactory;
+    private void Construct(IGameFactory gameFactory, IInputProcessService inputProcess)
+    {
+      _inputProcess = inputProcess;
+      _gameFactory = gameFactory;
+    }
 
     public void Initialize()
     {
       _gameFactory.MainCamera = _camera;
       _gameFactory.LevelRoot = _levelRoot;
       _gameFactory.DropPoints = _dropPoints;
+      _inputProcess.MainCamera = _camera;
     }
   }
 }

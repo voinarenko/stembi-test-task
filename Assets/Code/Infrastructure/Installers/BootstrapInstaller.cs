@@ -5,6 +5,8 @@ using Code.Infrastructure.States.GameStates;
 using Code.Infrastructure.States.StateMachine;
 using Code.Services.Async;
 using Code.Services.Input;
+using Code.Services.ItemsAccount;
+using Code.Services.ItemsProcess;
 using Code.Services.Progress;
 using Code.Services.Random;
 using Code.Services.StaticData;
@@ -27,6 +29,7 @@ namespace Code.Infrastructure.Installers
       BindStateFactory();
       BindGameStates();
       BindProgressServices();
+      BindItemsServices();
     }
 
     private void BindInputService() =>
@@ -68,6 +71,12 @@ namespace Code.Infrastructure.Installers
 
     private void BindProgressServices() =>
       Container.Bind<IProgressService>().To<ProgressService>().AsSingle();
+
+    private void BindItemsServices()
+    {
+      Container.Bind<IInputProcessService>().To<InputProcessService>().AsSingle();
+      Container.Bind<IItemsAccountService>().To<ItemsAccountService>().AsSingle();
+    }
 
     public void Initialize() =>
       Container.Resolve<IGameStateMachine>().Enter<BootstrapState>();

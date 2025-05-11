@@ -4,6 +4,7 @@ using Code.Infrastructure.States.StateMachine;
 using Code.Infrastructure.States.StatesInfrastructure;
 using Code.MonoBehaviours;
 using Code.Services.Async;
+using Code.Services.ItemsProcess;
 using Code.Services.StaticData;
 using Code.StaticData;
 using Cysharp.Threading.Tasks;
@@ -19,11 +20,12 @@ namespace Code.Infrastructure.States.GameStates
     private readonly IGameFactory _gameFactory;
     private readonly IStaticDataService _staticData;
     private readonly IAsyncService _async;
+    private readonly IInputProcessService _inputProcess;
 
     private int _previousBlockType;
 
     public LoadLevelState(IGameStateMachine stateMachine, ISceneLoader sceneLoader, ILoadingCurtain curtain,
-      IGameFactory gameFactory, IStaticDataService staticData, IAsyncService async)
+      IGameFactory gameFactory, IStaticDataService staticData, IAsyncService async, IInputProcessService inputProcess)
     {
       _stateMachine = stateMachine;
       _sceneLoader = sceneLoader;
@@ -31,6 +33,7 @@ namespace Code.Infrastructure.States.GameStates
       _gameFactory = gameFactory;
       _staticData = staticData;
       _async = async;
+      _inputProcess = inputProcess;
     }
 
     public void Enter(string payload)
@@ -60,6 +63,7 @@ namespace Code.Infrastructure.States.GameStates
     {
       var jar = _gameFactory.CreateJar(data.JarPrefab);
       await FillContainer(data, jar.GetContainer());
+      _inputProcess.Activate();
     }
 
     private async UniTask FillContainer(LevelStaticData data, Transform container)
@@ -67,7 +71,8 @@ namespace Code.Infrastructure.States.GameStates
       var figurinesList = _gameFactory.GenerateRandomFigurineList(data);
       foreach (var figurine in figurinesList)
       {
-        _gameFactory.CreateFigurine(figurine.shape, figurine.icon, figurine.color, data.ShapeScale, data.IconScale, container);
+        _gameFactory.CreateFigurine(figurine.shape, figurine.icon, figurine.color, data.ShapeScale, data.IconScale,
+          container);
         await _async.WaitForSeconds(data.NextFigurineDelay);
       }
     }

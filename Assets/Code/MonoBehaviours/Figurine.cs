@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Code.MonoBehaviours
 {
   public class Figurine : MonoBehaviour
   {
+    public event Action<Figurine> Clicked;
+    public event Action<Figurine> Arrived;
+    
     [SerializeField] private SpriteRenderer _shape;
     [SerializeField] private SpriteRenderer _icon;
 
@@ -14,5 +18,8 @@ namespace Code.MonoBehaviours
       _shape.transform.localScale = shapeScale;
       _shape.color = color;
     }
+
+    public void InvokeClick() =>
+      Clicked?.Invoke(this);
   }
 }
