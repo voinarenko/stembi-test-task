@@ -17,6 +17,7 @@ namespace Code.StaticData
 
     [SerializeField, Min(3)] private int _totalFigurines = 3;
     public List<GameObject> Shapes = new();
+    public GameObject JarPrefab;
     public Vector3 ShapeScale = new(2, 2, 2);
     public List<Sprite> Icons = new();
     public Vector3 IconScale = new(0.5f, 0.5f, 0.5f);
@@ -30,6 +31,7 @@ namespace Code.StaticData
       private string _inputText;
       private bool _isEditing;
       private SerializedProperty _shapesProp;
+      private SerializedProperty _jarPrefabProp;
       private SerializedProperty _shapeScaleProp;
       private SerializedProperty _iconsProp;
       private SerializedProperty _iconScaleProp;
@@ -39,6 +41,7 @@ namespace Code.StaticData
       private void OnEnable()
       {
         _shapesProp = serializedObject.FindProperty("Shapes");
+        _jarPrefabProp = serializedObject.FindProperty("JarPrefab");
         _shapeScaleProp = serializedObject.FindProperty("ShapeScale");
         _iconsProp = serializedObject.FindProperty("Icons");
         _iconScaleProp = serializedObject.FindProperty("IconScale");
@@ -88,6 +91,7 @@ namespace Code.StaticData
 
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(_shapesProp, true);
+        EditorGUILayout.PropertyField(_jarPrefabProp);
         EditorGUILayout.PropertyField(_shapeScaleProp);
         EditorGUILayout.PropertyField(_iconsProp, true);
         EditorGUILayout.PropertyField(_iconScaleProp);

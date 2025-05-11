@@ -7,8 +7,10 @@ namespace Code.Infrastructure.Installers
 {
   public class LevelInitializer : MonoBehaviour, IInitializable
   {
+    [SerializeField] private Camera _camera;
+    [SerializeField] private Transform _levelRoot;
     [SerializeField] private List<Transform> _dropPoints;
-    [SerializeField] private Transform _figurinesContainer;
+    [SerializeField] private Transform _actionBar;
     private IGameFactory _gameFactory;
 
     [Inject]
@@ -17,8 +19,9 @@ namespace Code.Infrastructure.Installers
 
     public void Initialize()
     {
+      _gameFactory.MainCamera = _camera;
+      _gameFactory.LevelRoot = _levelRoot;
       _gameFactory.DropPoints = _dropPoints;
-      _gameFactory.ElementsContainer = _figurinesContainer;
     }
   }
 }

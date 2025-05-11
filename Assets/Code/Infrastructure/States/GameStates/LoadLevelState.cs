@@ -2,12 +2,11 @@
 using Code.Infrastructure.Loading;
 using Code.Infrastructure.States.StateMachine;
 using Code.Infrastructure.States.StatesInfrastructure;
+using Code.MonoBehaviours;
 using Code.Services.Async;
 using Code.Services.StaticData;
 using Code.StaticData;
 using Cysharp.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Code.Infrastructure.States.GameStates
@@ -45,22 +44,30 @@ namespace Code.Infrastructure.States.GameStates
 
     private void OnLoaded()
     {
+      SetCamera();
       var data = _staticData.GetLevel();
       InitGameField(data).Forget();
       _stateMachine.Enter<LevelLoopState>();
     }
 
-    private async UniTaskVoid InitGameField(LevelStaticData data)
+    private void SetCamera()
     {
-      await FillContainer(data);
+      _gameFactory.MainCamera.TryGetComponent<CameraCorrector>(out var corrector);
+      corrector?.SetCameraSize();
     }
 
-    private async UniTask FillContainer(LevelStaticData data)
+    private async UniTaskVoid InitGameField(LevelStaticData data)
+    {
+      var jar = _gameFactory.CreateJar(data.JarPrefab);
+      await FillContainer(data, jar.GetContainer());
+    }
+
+    private async UniTask FillContainer(LevelStaticData data, Transform container)
     {
       var figurinesList = _gameFactory.GenerateRandomFigurineList(data);
       foreach (var figurine in figurinesList)
       {
-        _gameFactory.CreateFigurine(figurine.shape, figurine.icon, figurine.color, data.ShapeScale, data.IconScale);
+        _gameFactory.CreateFigurine(figurine.shape, figurine.icon, figurine.color, data.ShapeScale, data.IconScale, container);
         await _async.WaitForSeconds(data.NextFigurineDelay);
       }
     }

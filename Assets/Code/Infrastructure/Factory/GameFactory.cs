@@ -9,14 +9,22 @@ namespace Code.Infrastructure.Factory
 {
   public class GameFactory : IGameFactory
   {
+    public Camera MainCamera { get; set; }
     public RectTransform UIRoot { get; set; }
+    public Transform LevelRoot { get; set; }
     public List<Transform> DropPoints { get; set; }
-    public Transform ElementsContainer { get; set; }
 
     private readonly IRandomService _random;
+    private int _previousDropPointIndex = -1;
 
     public GameFactory(IRandomService random) =>
       _random = random;
+
+    public Jar CreateJar(GameObject prefab)
+    {
+      var go = Object.Instantiate(prefab, LevelRoot);
+      return !go.TryGetComponent<Jar>(out var jar) ? null : jar;
+    }
 
     public List<(GameObject shape, Sprite icon, Color color)> GenerateRandomFigurineList(LevelStaticData data)
     {
@@ -49,15 +57,15 @@ namespace Code.Infrastructure.Factory
       return result;
     }
 
-    public Figurine CreateFigurine(GameObject shape, Sprite icon, Color color, Vector3 shapeScale, Vector3 iconScale)
+    public Figurine CreateFigurine(GameObject shape, Sprite icon, Color color, Vector3 shapeScale, Vector3 iconScale,
+      Transform container)
     {
-      var go = Object.Instantiate(shape, ElementsContainer);
-      go.transform.position = DropPoints[_random.Range(0, DropPoints.Count)].position;
-      go.transform.localScale = shapeScale;
-      if (!go.TryGetComponent<Figurine>(out var figurine)) 
+      var go = Object.Instantiate(shape, container);
+      go.transform.position = SelectRandomDropPoint();
+      if (!go.TryGetComponent<Figurine>(out var figurine))
         return null;
-      
-      figurine.Init(icon, iconScale, color);
+
+      figurine.Init(icon, iconScale, shapeScale, color);
       return figurine;
     }
 
@@ -68,6 +76,33 @@ namespace Code.Infrastructure.Factory
         var j = _random.Range(0, i + 1);
         (list[i], list[j]) = (list[j], list[i]);
       }
+    }
+
+    private Vector3 SelectRandomDropPoint()
+    {
+      if (DropPoints.Count == 0)
+        return Vector3.zero;
+
+      int randomIndex;
+
+      switch (DropPoints.Count)
+      {
+        case 1:
+          randomIndex = 0;
+          break;
+        case 2:
+          randomIndex = _previousDropPointIndex == 0 ? 1 : 0;
+          break;
+        default:
+        {
+          randomIndex = _random.Range(0, DropPoints.Count - 1);
+          if (randomIndex >= _previousDropPointIndex) randomIndex++;
+          break;
+        }
+      }
+
+      _previousDropPointIndex = randomIndex;
+      return DropPoints[randomIndex].position;
     }
   }
 }
