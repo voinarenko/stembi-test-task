@@ -1,4 +1,5 @@
-﻿using Code.MonoBehaviours;
+﻿using Code.Data;
+using Code.MonoBehaviours;
 using Code.Services.Random;
 using Code.StaticData;
 using System.Collections.Generic;
@@ -26,16 +27,16 @@ namespace Code.Infrastructure.Factory
       return !go.TryGetComponent<Jar>(out var jar) ? null : jar;
     }
 
-    public List<(GameObject shape, Sprite icon, Color color)> GenerateRandomFigurineList(LevelStaticData data)
+    public List<Imprint> GenerateRandomFigurineList(LevelStaticData data)
     {
       var allCombinations = (from shape in data.Shapes
         from color in data.Colors
         from icon in data.Icons
-        select (shape, icon, color)).ToList();
+        select new Imprint(shape, icon, color)).ToList();
 
       Shuffle(allCombinations);
 
-      var result = new List<(GameObject, Sprite, Color)>();
+      var result = new List<Imprint>();
       var tripletCount = data.TotalFigurines / 3;
       var remainder = data.TotalFigurines % 3;
 
@@ -65,7 +66,8 @@ namespace Code.Infrastructure.Factory
       if (!go.TryGetComponent<Figurine>(out var figurine))
         return null;
 
-      figurine.Init(icon, iconScale, shapeScale, color);
+      figurine.Data = new Imprint(shape, icon, color);
+      figurine.Init(iconScale, shapeScale);
       return figurine;
     }
 

@@ -23,16 +23,14 @@ namespace Code.Services.ItemsProcess
     {
       var pointerPosition = MainCamera.ScreenToWorldPoint(_input.Actions().UI.Point.ReadValue<Vector2>());
       var hit = Physics2D.Raycast(pointerPosition, Vector2.zero);
-
-      if (hit.collider)
-      {
-        var figurine = hit.transform.GetComponentInParent<Figurine>();
-        if (!figurine) return;
+      if (!hit.collider) 
+        return;
+      
+      var figurine = hit.transform.GetComponentInParent<Figurine>();
+      if (!figurine) 
+        return;
         
-        Debug.Log($"Спрайт {figurine.name} был нажат!");
-        // Ваш код обработки клика
-        figurine.InvokeClick();
-      }
+      figurine.InvokeClick();
     }
   }
 }

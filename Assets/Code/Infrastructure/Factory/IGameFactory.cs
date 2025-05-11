@@ -1,4 +1,5 @@
-﻿using Code.MonoBehaviours;
+﻿using Code.Data;
+using Code.MonoBehaviours;
 using Code.Services;
 using Code.StaticData;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Code.Infrastructure.Factory
     List<Transform> DropPoints { get; set; }
     Figurine CreateFigurine(GameObject shape, Sprite icon, Color color, Vector3 shapeScale, Vector3 iconScale,
       Transform container);
-    List<(GameObject shape, Sprite icon, Color color)> GenerateRandomFigurineList(LevelStaticData data);
+    List<Imprint> GenerateRandomFigurineList(LevelStaticData data);
     Jar CreateJar(GameObject prefab);
   }
 }
