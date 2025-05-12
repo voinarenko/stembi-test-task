@@ -5,11 +5,11 @@ using Code.Infrastructure.States.GameStates;
 using Code.Infrastructure.States.StateMachine;
 using Code.Services.Async;
 using Code.Services.Input;
+using Code.Services.InputProcess;
 using Code.Services.ItemsAccount;
-using Code.Services.ItemsProcess;
-using Code.Services.Progress;
 using Code.Services.Random;
 using Code.Services.StaticData;
+using Code.Services.UIAnimation;
 using Zenject;
 
 namespace Code.Infrastructure.Installers
@@ -28,8 +28,8 @@ namespace Code.Infrastructure.Installers
       BindStateMachine();
       BindStateFactory();
       BindGameStates();
-      BindProgressServices();
       BindItemsServices();
+      BindUIServices();
     }
 
     private void BindInputService() =>
@@ -64,13 +64,9 @@ namespace Code.Infrastructure.Installers
     private void BindGameStates()
     {
       Container.BindInterfacesAndSelfTo<BootstrapState>().AsSingle();
-      Container.BindInterfacesAndSelfTo<LoadProgressState>().AsSingle();
       Container.BindInterfacesAndSelfTo<LoadLevelState>().AsSingle();
       Container.BindInterfacesAndSelfTo<LevelLoopState>().AsSingle();
     }
-
-    private void BindProgressServices() =>
-      Container.Bind<IProgressService>().To<ProgressService>().AsSingle();
 
     private void BindItemsServices()
     {
@@ -80,5 +76,8 @@ namespace Code.Infrastructure.Installers
 
     public void Initialize() =>
       Container.Resolve<IGameStateMachine>().Enter<BootstrapState>();
+
+    private void BindUIServices() =>
+      Container.Bind<IUIAnimationService>().To<UIAnimationService>().AsSingle();
   }
 }

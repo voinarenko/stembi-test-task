@@ -6,7 +6,7 @@ namespace Code.MonoBehaviours
 {
   public class FigurineMove : MonoBehaviour
   {
-    private const float AnimationDuration = 1f;
+    private const float AnimationDuration = 0.5f;
     public event Action Arrived;
 
     [SerializeField] private Rigidbody2D _rb;

@@ -8,6 +8,7 @@ namespace Code.Infrastructure.States.GameStates
   public class BootstrapState : IState
   {
     private const string BootSceneName = "Boot";
+    private const string LevelSceneName = "Main";
     private readonly IGameStateMachine _stateMachine;
     private readonly ISceneLoader _sceneLoader;
     private readonly IStaticDataService _staticData;
@@ -28,9 +29,8 @@ namespace Code.Infrastructure.States.GameStates
 
     private void OnLoad()
     {
-      // DOTween.SetTweensCapacity(500, 125);
       LoadStaticData();
-      _stateMachine.Enter<LoadProgressState>();
+      _stateMachine.Enter<LoadLevelState, string>(LevelSceneName);
     }
 
     private void LoadStaticData() =>

@@ -1,7 +1,7 @@
 using Code.Infrastructure.Factory;
 using Code.MonoBehaviours;
+using Code.Services.InputProcess;
 using Code.Services.ItemsAccount;
-using Code.Services.ItemsProcess;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;

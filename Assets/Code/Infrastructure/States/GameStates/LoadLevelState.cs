@@ -4,9 +4,10 @@ using Code.Infrastructure.States.StateMachine;
 using Code.Infrastructure.States.StatesInfrastructure;
 using Code.MonoBehaviours;
 using Code.Services.Async;
+using Code.Services.InputProcess;
 using Code.Services.ItemsAccount;
-using Code.Services.ItemsProcess;
 using Code.Services.StaticData;
+using Code.Services.UIAnimation;
 using Code.StaticData;
 using Cysharp.Threading.Tasks;
 using System.Linq;
@@ -24,12 +25,13 @@ namespace Code.Infrastructure.States.GameStates
     private readonly IAsyncService _async;
     private readonly IInputProcessService _inputProcess;
     private readonly IItemsAccountService _itemsAccount;
+    private readonly IUIAnimationService _uiAnimation;
 
     private int _previousBlockType;
 
     public LoadLevelState(IGameStateMachine stateMachine, ISceneLoader sceneLoader, ILoadingCurtain curtain,
       IGameFactory gameFactory, IStaticDataService staticData, IAsyncService async, IInputProcessService inputProcess,
-      IItemsAccountService itemsAccount)
+      IItemsAccountService itemsAccount, IUIAnimationService uiAnimation)
     {
       _stateMachine = stateMachine;
       _sceneLoader = sceneLoader;
@@ -39,6 +41,7 @@ namespace Code.Infrastructure.States.GameStates
       _async = async;
       _inputProcess = inputProcess;
       _itemsAccount = itemsAccount;
+      _uiAnimation = uiAnimation;
     }
 
     public void Enter(string payload)
@@ -66,8 +69,10 @@ namespace Code.Infrastructure.States.GameStates
 
     private async UniTaskVoid InitGameField(LevelStaticData data)
     {
+      _uiAnimation.Init();
       var jar = _gameFactory.CreateJar(data.JarPrefab);
       await FillContainer(data, jar.GetContainer());
+      _uiAnimation.ShowUIElements();
       _inputProcess.Activate();
     }
 

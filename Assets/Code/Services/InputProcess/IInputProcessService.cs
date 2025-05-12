@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Services.ItemsProcess
+namespace Code.Services.InputProcess
 {
   public interface IInputProcessService
   {

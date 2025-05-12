@@ -4,7 +4,7 @@ using Code.Services.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Code.Services.ItemsProcess
+namespace Code.Services.InputProcess
 {
   public class InputProcessService : IInputProcessService
   {
@@ -15,19 +15,14 @@ namespace Code.Services.ItemsProcess
     {
       Application.quitting += OnApplicationQuitting;
       _input = input;
-    }
-
-    public void Activate()
-    {
-      _input.Actions().UI.Click.performed += OnPressed;
       _input.Actions().UI.Back.performed += Quit;
     }
 
-    public void Deactivate()
-    {
+    public void Activate() =>
+      _input.Actions().UI.Click.performed += OnPressed;
+
+    public void Deactivate() =>
       _input.Actions().UI.Click.performed -= OnPressed;
-      _input.Actions().UI.Back.performed -= Quit;
-    }
 
     private void OnPressed(InputAction.CallbackContext context)
     {
@@ -49,6 +44,7 @@ namespace Code.Services.ItemsProcess
     private void OnApplicationQuitting()
     {
       Application.quitting -= OnApplicationQuitting;
+      _input.Actions().UI.Back.performed -= Quit;
       Deactivate();
     }
   }
