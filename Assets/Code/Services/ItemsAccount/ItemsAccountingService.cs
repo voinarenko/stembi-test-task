@@ -1,4 +1,5 @@
-﻿using Code.Infrastructure.Factory;
+﻿using Code.Data;
+using Code.Infrastructure.Factory;
 using Code.MonoBehaviours;
 using Code.Services.Async;
 using Code.Services.InputProcess;
@@ -10,7 +11,7 @@ using UnityEngine;
 
 namespace Code.Services.ItemsAccount
 {
-  public class ItemsAccountService : IItemsAccountService
+  public class ItemsAccountingService : IItemsAccountService
   {
     public List<Slot> Slots { get; set; }
     public Transform DisabledItems { get; set; }
@@ -27,8 +28,8 @@ namespace Code.Services.ItemsAccount
     private readonly IGameFactory _gameFactory;
 
 
-    public ItemsAccountService(IUIAnimationService uiAnimation, IInputProcessService inputProcess, IAsyncService async,
-      IGameFactory gameFactory)
+    public ItemsAccountingService(IUIAnimationService uiAnimation, IInputProcessService inputProcess,
+      IAsyncService async, IGameFactory gameFactory)
     {
       _uiAnimation = uiAnimation;
       _inputProcess = inputProcess;

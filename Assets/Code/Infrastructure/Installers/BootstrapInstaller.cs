@@ -71,7 +71,7 @@ namespace Code.Infrastructure.Installers
     private void BindItemsServices()
     {
       Container.Bind<IInputProcessService>().To<InputProcessService>().AsSingle();
-      Container.Bind<IItemsAccountService>().To<ItemsAccountService>().AsSingle();
+      Container.Bind<IItemsAccountService>().To<ItemsAccountingService>().AsSingle();
     }
 
     public void Initialize() =>

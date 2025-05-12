@@ -14,6 +14,7 @@ namespace Code.Infrastructure.Factory
     public Transform LevelRoot { get; set; }
     public List<Transform> DropPoints { get; set; }
 
+    private const int Match = 3;
     private readonly Queue<Figurine> _figurinesPool = new();
     private readonly IRandomService _random;
     private int _previousDropPointIndex = -1;
@@ -37,8 +38,8 @@ namespace Code.Infrastructure.Factory
       Shuffle(allCombinations);
 
       var result = new List<Imprint>();
-      var tripletCount = data.TotalFigurines / 3;
-      var remainder = data.TotalFigurines % 3;
+      var tripletCount = data.TotalFigurines / Match;
+      var remainder = data.TotalFigurines % Match;
 
       for (var i = 0; i < tripletCount && i < allCombinations.Count; i++)
       {
