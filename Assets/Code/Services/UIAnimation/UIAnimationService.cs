@@ -22,8 +22,13 @@ namespace Code.Services.UIAnimation
     private float _bottomAreaTargetPositionY;
     private float _resultHidePositionX;
 
+    private Tweener _resultScreenTweener;
+    private Tweener _topAreaTweener;
+    private Tweener _bottomAreaTweener;
+
     public void Init()
     {
+      Application.quitting += OnApplicationQuitting;
       ResultScreen.TryGetComponent(out _resultScreen);
       InitUIPositions();
       SetupUIElements();
@@ -32,19 +37,19 @@ namespace Code.Services.UIAnimation
     public void ShowUIElements()
     {
       TopArea.gameObject.SetActive(true);
-      TopArea.DOLocalMoveY(_topAreaTargetPositionY, AnimationDuration)
+      _topAreaTweener = TopArea.DOLocalMoveY(_topAreaTargetPositionY, AnimationDuration)
         .SetEase(Ease.OutBounce);
       BottomArea.gameObject.SetActive(true);
-      BottomArea.DOLocalMoveY(_bottomAreaTargetPositionY, AnimationDuration)
+      _bottomAreaTweener = BottomArea.DOLocalMoveY(_bottomAreaTargetPositionY, AnimationDuration)
         .SetEase(Ease.OutBounce);
     }
 
     public void HideUIElements()
     {
-      TopArea.DOLocalMoveY(_topAreaHidePositionY, AnimationDuration)
+      _topAreaTweener = TopArea.DOLocalMoveY(_topAreaHidePositionY, AnimationDuration)
         .SetEase(Ease.InBounce)
         .OnComplete(() => TopArea.gameObject.SetActive(false));
-      BottomArea.DOLocalMoveY(_bottomAreaHidePositionY, AnimationDuration)
+      _bottomAreaTweener = BottomArea.DOLocalMoveY(_bottomAreaHidePositionY, AnimationDuration)
         .SetEase(Ease.InBounce)
         .OnComplete(() => BottomArea.gameObject.SetActive(false));
     }
@@ -54,12 +59,12 @@ namespace Code.Services.UIAnimation
       HideUIElements();
       _resultScreen.Show(isSuccess);
       ResultScreen.gameObject.SetActive(true);
-      ResultScreen.DOLocalMoveX(ResultTargetPositionX, AnimationDuration)
+      _resultScreenTweener = ResultScreen.DOLocalMoveX(ResultTargetPositionX, AnimationDuration)
         .SetEase(Ease.OutBounce);
     }
 
-    public void HideResult(bool isSuccess) =>
-      ResultScreen.DOLocalMoveX(_resultHidePositionX, AnimationDuration)
+    public void HideResult() =>
+      _resultScreenTweener = ResultScreen.DOLocalMoveX(_resultHidePositionX, AnimationDuration)
         .SetEase(Ease.InBounce)
         .OnComplete(() => ResultScreen.gameObject.SetActive(false));
 
@@ -81,6 +86,13 @@ namespace Code.Services.UIAnimation
       TopArea.localPosition = new Vector3(0, _topAreaHidePositionY, 0);
       BottomArea.localPosition = new Vector3(0, _bottomAreaHidePositionY, 0);
       ResultScreen.localPosition = new Vector3(_resultHidePositionX, 0, 0);
+    }
+    private void OnApplicationQuitting()
+    {
+      Application.quitting -= OnApplicationQuitting;
+      _resultScreenTweener?.Kill();
+      _topAreaTweener?.Kill();
+      _bottomAreaTweener?.Kill();
     }
   }
 }

@@ -12,6 +12,6 @@ namespace Code.Services.UIAnimation
     void ShowUIElements();
     void HideUIElements();
     void ShowResult(bool isSuccess);
-    void HideResult(bool isSuccess);
+    void HideResult();
   }
 }

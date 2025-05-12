@@ -74,15 +74,9 @@ namespace Code.Infrastructure.States.GameStates
       var container = _gameFactory.CreateJar(data.JarPrefab).GetContainer();
       
       _itemsAccounting.Container = container;
-      await FillContainerAsync(data, container);
+      await _itemsAccounting.FillContainerAsync(data, container);
       _uiAnimation.ShowUIElements();
       _inputProcessing.Activate();
-    }
-
-    private async UniTask FillContainerAsync(LevelStaticData data, Transform container)
-    {
-      var figurinesKeys = _itemGeneration.GenerateRandomFigurineKeys(data);
-      await _itemsAccounting.DropFigurinesAsync(data, container, figurinesKeys);
     }
   }
 }

@@ -1,3 +1,4 @@
+using Code.MonoBehaviours;
 using Code.Services.ItemsAccounting;
 using Code.Services.UIAnimation;
 using UnityEngine;
@@ -24,11 +25,13 @@ namespace Code.Infrastructure.Installers
     }
 
     public void Initialize()
-    { 
+    {
       _uiAnimation.UiRoot = _uiRoot;
       _uiAnimation.TopArea = _topArea;
       _uiAnimation.BottomArea = _bottomArea;
       _uiAnimation.ResultScreen = _resultScreen;
+      if (_resultScreen.TryGetComponent(out ResultScreen resultScreen))
+        _itemsAccounting.ResultScreen = resultScreen;
       _itemsAccounting.RefreshButton = _refreshButton;
     }
   }

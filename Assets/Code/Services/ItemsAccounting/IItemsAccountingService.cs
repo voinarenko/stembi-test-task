@@ -15,7 +15,9 @@ namespace Code.Services.ItemsAccounting
     Transform DisabledItems { get; set; }
     Button RefreshButton { get; set; }
     Transform Container { get; set; }
+    ResultScreen ResultScreen { get; set; }
     void Init();
     UniTask DropFigurinesAsync(LevelStaticData data, Transform container, List<ImprintKey> figurinesKeys);
+    UniTask FillContainerAsync(LevelStaticData data, Transform container);
   }
 }

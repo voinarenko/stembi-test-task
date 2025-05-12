@@ -18,9 +18,10 @@ namespace Code.Services.ItemsAccounting
   public class ItemsAccountingService : IItemsAccountingService
   {
     public List<Slot> Slots { get; set; }
+    public Transform Container { get; set; }
     public Transform DisabledItems { get; set; }
     public Button RefreshButton { get; set; }
-    public Transform Container { get; set; }
+    public ResultScreen ResultScreen { get; set; }
 
     private const int Match = 3;
     private const float ResultShowDelay = 1;
@@ -47,8 +48,18 @@ namespace Code.Services.ItemsAccounting
       _staticData = staticData;
     }
 
-    public void Init() =>
+    public void Init()
+    {
       RefreshButton.onClick.AddListener(RefreshField);
+      ResultScreen.PlayClicked += RestartGame;
+      ResultScreen.QuitClicked += Utils.Quit;
+    }
+
+    public async UniTask FillContainerAsync(LevelStaticData data, Transform container)
+    {
+      var figurinesKeys = _itemGeneration.GenerateRandomFigurineKeys(data);
+      await DropFigurinesAsync(data, container, figurinesKeys);
+    }
 
     public async UniTask DropFigurinesAsync(LevelStaticData data, Transform container, List<ImprintKey> figurinesKeys)
     {
@@ -81,7 +92,7 @@ namespace Code.Services.ItemsAccounting
       emptySlot.IsEmpty = false;
       emptySlot = Slots.FirstOrDefault(s => s.IsEmpty);
 
-      if (!emptySlot) 
+      if (!emptySlot)
         ShowResult(isSuccess: false).Forget();
     }
 
@@ -114,7 +125,7 @@ namespace Code.Services.ItemsAccounting
         UnsubscribeFrom(figurine);
         _gameFactory.ReturnFigurine(figurine);
       }
-      if (_activeFigurines.Count == 0 && _figurines.Count == 0) 
+      if (_activeFigurines.Count == 0 && _figurines.Count == 0)
         ShowResult(isSuccess: true).Forget();
     }
 
@@ -126,16 +137,23 @@ namespace Code.Services.ItemsAccounting
       _uiAnimation.HideUIElements();
       var data = _staticData.GetLevel();
       var figurinesKeys = _itemGeneration.GenerateRefreshedFigurineKeys(data, _activeFigurines, _figurines.Count);
-      foreach (var figurine in _figurines)
+      ReleaseItemsIn(_figurines);
+      _figurines.Clear();
+      await DropFigurinesAsync(data, Container, figurinesKeys);
+      _uiAnimation.ShowUIElements();
+    }
+
+    private void ReleaseItemsIn(List<Figurine> figurines)
+    {
+      foreach (var figurine in figurines)
       {
         UnsubscribeFrom(figurine);
+        figurine.OccupiedSlot = null;
         figurine.gameObject.SetActive(false);
         figurine.transform.SetParent(DisabledItems);
         _gameFactory.ReturnFigurine(figurine);
       }
-      _figurines.Clear();
-      await DropFigurinesAsync(data, Container, figurinesKeys);
-      _uiAnimation.ShowUIElements();
+      figurines.Clear();
     }
 
     private void SubscribeTo(Figurine figurine)
@@ -155,6 +173,21 @@ namespace Code.Services.ItemsAccounting
       _inputProcessing.Deactivate();
       await _async.WaitForSeconds(ResultShowDelay);
       _uiAnimation.ShowResult(isSuccess);
+    }
+
+    private void RestartGame() =>
+      RestartGameAsync().Forget();
+
+    private async UniTaskVoid RestartGameAsync()
+    {
+      _inputProcessing.Activate();
+      ReleaseItemsIn(_figurines);
+      ReleaseItemsIn(_activeFigurines);
+      foreach (var slot in Slots) 
+        slot.IsEmpty = true;
+      _uiAnimation.HideResult();
+      await FillContainerAsync(_staticData.GetLevel(), Container);
+      _uiAnimation.ShowUIElements();
     }
   }
 }
