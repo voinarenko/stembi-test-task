@@ -79,7 +79,7 @@ namespace Code.Infrastructure.States.GameStates
     private async UniTask FillContainer(LevelStaticData data, Transform container)
     {
       var figurinesList = _gameFactory.GenerateRandomFigurineList(data);
-      foreach (var figurine in figurinesList.Select(entry => _gameFactory.CreateFigurine(entry.Shape, entry.Icon,
+      foreach (var figurine in figurinesList.Select(entry => _gameFactory.GetFigurine(entry.Shape, entry.Icon,
                  entry.Color, data.ShapeScale, data.IconScale, container)))
       {
         _itemsAccount.AddFigurine(figurine);

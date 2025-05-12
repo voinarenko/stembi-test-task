@@ -14,6 +14,7 @@ namespace Code.Infrastructure.Installers
     [SerializeField] private Transform _levelRoot;
     [SerializeField] private List<Transform> _dropPoints;
     [SerializeField] private List<Slot> _slots;
+    [SerializeField] private Transform _disabledItems;
     private IGameFactory _gameFactory;
     private IInputProcessService _inputProcess;
     private IItemsAccountService _itemsAccount;
@@ -33,6 +34,7 @@ namespace Code.Infrastructure.Installers
       _gameFactory.DropPoints = _dropPoints;
       _inputProcess.MainCamera = _camera;
       _itemsAccount.Slots = _slots;
+      _itemsAccount.DisabledItems = _disabledItems;
     }
   }
 }

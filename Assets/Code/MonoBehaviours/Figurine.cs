@@ -26,19 +26,26 @@ namespace Code.MonoBehaviours
       _move.Arrived += OnArrival;
     }
 
-    private void OnArrival()
-    {
-      _move.Arrived -= OnArrival;
-      Arrived?.Invoke(this);
-    }
-
     public void InvokeClick() =>
       Clicked?.Invoke(this);
-    
+
     public void MoveToSlot()
     {
       _collider.enabled = false;
       _move.ToSlot();
+    }
+
+    public void ResetData()
+    {
+      OccupiedSlot = null;
+      _collider.enabled = true;
+      _move.ResetData();
+    }
+    
+    private void OnArrival()
+    {
+      _move.Arrived -= OnArrival;
+      Arrived?.Invoke(this);
     }
   }
 }

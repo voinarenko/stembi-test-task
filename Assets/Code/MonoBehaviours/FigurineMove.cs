@@ -40,5 +40,13 @@ namespace Code.MonoBehaviours
             Arrived?.Invoke();
           }));
     }
+
+    public void ResetData()
+    {
+      _rb.bodyType = RigidbodyType2D.Dynamic;
+      _rb.constraints = RigidbodyConstraints2D.None;
+      transform.localPosition = Vector3.zero;
+      transform.localScale = Vector3.one;
+    }
   }
 }

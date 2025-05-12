@@ -1,4 +1,5 @@
-﻿using Code.MonoBehaviours;
+﻿using Code.Infrastructure.Factory;
+using Code.MonoBehaviours;
 using Code.Services.Async;
 using Code.Services.InputProcess;
 using Code.Services.UIAnimation;
@@ -12,6 +13,7 @@ namespace Code.Services.ItemsAccount
   public class ItemsAccountService : IItemsAccountService
   {
     public List<Slot> Slots { get; set; }
+    public Transform DisabledItems { get; set; }
 
     private const int Match = 3;
     private const float ResultShowDelay = 1;
@@ -22,12 +24,16 @@ namespace Code.Services.ItemsAccount
     private readonly IUIAnimationService _uiAnimation;
     private readonly IInputProcessService _inputProcess;
     private readonly IAsyncService _async;
+    private readonly IGameFactory _gameFactory;
 
-    public ItemsAccountService(IUIAnimationService uiAnimation, IInputProcessService inputProcess, IAsyncService async)
+
+    public ItemsAccountService(IUIAnimationService uiAnimation, IInputProcessService inputProcess, IAsyncService async,
+      IGameFactory gameFactory)
     {
       _uiAnimation = uiAnimation;
       _inputProcess = inputProcess;
       _async = async;
+      _gameFactory = gameFactory;
     }
 
     public void AddFigurine(Figurine figurine)
@@ -37,7 +43,7 @@ namespace Code.Services.ItemsAccount
       _figurines.Add(figurine);
     }
 
-    private void ProcessClick(Figurine figurine) => 
+    private void ProcessClick(Figurine figurine) =>
       ProcessClickAsync(figurine).Forget();
 
     private async UniTaskVoid ProcessClickAsync(Figurine figurine)
@@ -89,7 +95,9 @@ namespace Code.Services.ItemsAccount
       {
         _activeFigurines.Remove(figurine);
         figurine.OccupiedSlot.IsEmpty = true;
-        Object.Destroy(figurine.gameObject);
+        figurine.transform.SetParent(DisabledItems);
+        figurine.gameObject.SetActive(false);
+        _gameFactory.ReturnFigurine(figurine);
       }
     }
   }

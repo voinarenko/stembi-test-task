@@ -11,10 +11,10 @@ namespace Code.Infrastructure.Factory
   public class GameFactory : IGameFactory
   {
     public Camera MainCamera { get; set; }
-    public RectTransform UIRoot { get; set; }
     public Transform LevelRoot { get; set; }
     public List<Transform> DropPoints { get; set; }
 
+    private readonly Queue<Figurine> _figurinesPool = new();
     private readonly IRandomService _random;
     private int _previousDropPointIndex = -1;
 
@@ -58,7 +58,24 @@ namespace Code.Infrastructure.Factory
       return result;
     }
 
-    public Figurine CreateFigurine(GameObject shape, Sprite icon, Color color, Vector3 shapeScale, Vector3 iconScale,
+    public Figurine GetFigurine(GameObject shape, Sprite icon, Color color, Vector3 shapeScale, Vector3 iconScale,
+      Transform container)
+    {
+      if (_figurinesPool.Count == 0) 
+        return CreateFigurine(shape, icon, color, shapeScale, iconScale, container);
+      
+      var figurine = _figurinesPool.Dequeue();
+      figurine.transform.SetParent(container);
+      figurine.transform.position = SelectRandomDropPoint();
+      figurine.gameObject.SetActive(true);
+      figurine.Data = new Imprint(shape, icon, color);
+      return figurine;
+    }
+
+    public void ReturnFigurine(Figurine figurine) => 
+      _figurinesPool.Enqueue(figurine);
+    
+    private Figurine CreateFigurine(GameObject shape, Sprite icon, Color color, Vector3 shapeScale, Vector3 iconScale,
       Transform container)
     {
       var go = Object.Instantiate(shape, container);
