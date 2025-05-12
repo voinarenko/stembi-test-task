@@ -12,7 +12,6 @@ namespace Code.Infrastructure.Factory
     Camera MainCamera { get; set; }
     Transform LevelRoot { get; set; }
     List<Transform> DropPoints { get; set; }
-    List<Imprint> GenerateRandomFigurineList(LevelStaticData data);
     Jar CreateJar(GameObject prefab);
 
     Figurine GetFigurine(GameObject shape, Sprite icon, Color color, Vector3 shapeScale, Vector3 iconScale,

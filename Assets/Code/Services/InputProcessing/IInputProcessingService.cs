@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Code.Services.InputProcess
+namespace Code.Services.InputProcessing
 {
-  public interface IInputProcessService
+  public interface IInputProcessingService
   {
     void Activate();
     void Deactivate();

@@ -4,14 +4,14 @@ using Code.Services.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Code.Services.InputProcess
+namespace Code.Services.InputProcessing
 {
-  public class InputProcessService : IInputProcessService
+  public class InputProcessingService : IInputProcessingService
   {
     public Camera MainCamera { get; set; }
     private readonly IInputService _input;
 
-    public InputProcessService(IInputService input)
+    public InputProcessingService(IInputService input)
     {
       Application.quitting += OnApplicationQuitting;
       _input = input;

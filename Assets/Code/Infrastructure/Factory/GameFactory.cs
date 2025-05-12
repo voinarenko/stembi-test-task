@@ -14,7 +14,6 @@ namespace Code.Infrastructure.Factory
     public Transform LevelRoot { get; set; }
     public List<Transform> DropPoints { get; set; }
 
-    private const int Match = 3;
     private readonly Queue<Figurine> _figurinesPool = new();
     private readonly IRandomService _random;
     private int _previousDropPointIndex = -1;
@@ -26,37 +25,6 @@ namespace Code.Infrastructure.Factory
     {
       var go = Object.Instantiate(prefab, LevelRoot);
       return !go.TryGetComponent<Jar>(out var jar) ? null : jar;
-    }
-
-    public List<Imprint> GenerateRandomFigurineList(LevelStaticData data)
-    {
-      var allCombinations = (from shape in data.Shapes
-        from color in data.Colors
-        from icon in data.Icons
-        select new Imprint(shape, icon, color)).ToList();
-
-      Shuffle(allCombinations);
-
-      var result = new List<Imprint>();
-      var tripletCount = data.TotalFigurines / Match;
-      var remainder = data.TotalFigurines % Match;
-
-      for (var i = 0; i < tripletCount && i < allCombinations.Count; i++)
-      {
-        var combo = allCombinations[i];
-        result.Add(combo);
-        result.Add(combo);
-        result.Add(combo);
-      }
-
-      for (var i = 0; i < remainder; i++)
-      {
-        var combo = allCombinations[_random.Range(0, tripletCount)];
-        result.Add(combo);
-      }
-
-      Shuffle(result);
-      return result;
     }
 
     public Figurine GetFigurine(GameObject shape, Sprite icon, Color color, Vector3 shapeScale, Vector3 iconScale,
@@ -87,15 +55,6 @@ namespace Code.Infrastructure.Factory
       figurine.Data = new Imprint(shape, icon, color);
       figurine.Init(iconScale, shapeScale);
       return figurine;
-    }
-
-    private void Shuffle<T>(List<T> list)
-    {
-      for (var i = list.Count - 1; i > 0; i--)
-      {
-        var j = _random.Range(0, i + 1);
-        (list[i], list[j]) = (list[j], list[i]);
-      }
     }
 
     private Vector3 SelectRandomDropPoint()

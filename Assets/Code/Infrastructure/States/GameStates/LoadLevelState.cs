@@ -4,8 +4,9 @@ using Code.Infrastructure.States.StateMachine;
 using Code.Infrastructure.States.StatesInfrastructure;
 using Code.MonoBehaviours;
 using Code.Services.Async;
-using Code.Services.InputProcess;
+using Code.Services.InputProcessing;
 using Code.Services.ItemsAccount;
+using Code.Services.ItemsGeneration;
 using Code.Services.StaticData;
 using Code.Services.UIAnimation;
 using Code.StaticData;
@@ -23,15 +24,16 @@ namespace Code.Infrastructure.States.GameStates
     private readonly IGameFactory _gameFactory;
     private readonly IStaticDataService _staticData;
     private readonly IAsyncService _async;
-    private readonly IInputProcessService _inputProcess;
+    private readonly IInputProcessingService _inputProcessing;
     private readonly IItemsAccountService _itemsAccount;
     private readonly IUIAnimationService _uiAnimation;
+    private readonly IItemGenerationService _itemGeneration;
 
     private int _previousBlockType;
 
     public LoadLevelState(IGameStateMachine stateMachine, ISceneLoader sceneLoader, ILoadingCurtain curtain,
-      IGameFactory gameFactory, IStaticDataService staticData, IAsyncService async, IInputProcessService inputProcess,
-      IItemsAccountService itemsAccount, IUIAnimationService uiAnimation)
+      IGameFactory gameFactory, IStaticDataService staticData, IAsyncService async, IInputProcessingService inputProcessing,
+      IItemsAccountService itemsAccount, IUIAnimationService uiAnimation, IItemGenerationService itemGeneration)
     {
       _stateMachine = stateMachine;
       _sceneLoader = sceneLoader;
@@ -39,9 +41,10 @@ namespace Code.Infrastructure.States.GameStates
       _gameFactory = gameFactory;
       _staticData = staticData;
       _async = async;
-      _inputProcess = inputProcess;
+      _inputProcessing = inputProcessing;
       _itemsAccount = itemsAccount;
       _uiAnimation = uiAnimation;
+      _itemGeneration = itemGeneration;
     }
 
     public void Enter(string payload)
@@ -73,12 +76,12 @@ namespace Code.Infrastructure.States.GameStates
       var jar = _gameFactory.CreateJar(data.JarPrefab);
       await FillContainer(data, jar.GetContainer());
       _uiAnimation.ShowUIElements();
-      _inputProcess.Activate();
+      _inputProcessing.Activate();
     }
 
     private async UniTask FillContainer(LevelStaticData data, Transform container)
     {
-      var figurinesList = _gameFactory.GenerateRandomFigurineList(data);
+      var figurinesList = _itemGeneration.GenerateRandomFigurineList(data);
       foreach (var figurine in figurinesList.Select(entry => _gameFactory.GetFigurine(entry.Shape, entry.Icon,
                  entry.Color, data.ShapeScale, data.IconScale, container)))
       {

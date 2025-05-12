@@ -2,7 +2,7 @@
 using Code.Infrastructure.Factory;
 using Code.MonoBehaviours;
 using Code.Services.Async;
-using Code.Services.InputProcess;
+using Code.Services.InputProcessing;
 using Code.Services.UIAnimation;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
@@ -23,16 +23,16 @@ namespace Code.Services.ItemsAccount
     private readonly List<Figurine> _activeFigurines = new();
 
     private readonly IUIAnimationService _uiAnimation;
-    private readonly IInputProcessService _inputProcess;
+    private readonly IInputProcessingService _inputProcessing;
     private readonly IAsyncService _async;
     private readonly IGameFactory _gameFactory;
 
 
-    public ItemsAccountingService(IUIAnimationService uiAnimation, IInputProcessService inputProcess,
+    public ItemsAccountingService(IUIAnimationService uiAnimation, IInputProcessingService inputProcessing,
       IAsyncService async, IGameFactory gameFactory)
     {
       _uiAnimation = uiAnimation;
-      _inputProcess = inputProcess;
+      _inputProcessing = inputProcessing;
       _async = async;
       _gameFactory = gameFactory;
     }
@@ -66,7 +66,7 @@ namespace Code.Services.ItemsAccount
 
       if (!emptySlot)
       {
-        _inputProcess.Deactivate();
+        _inputProcessing.Deactivate();
         await _async.WaitForSeconds(ResultShowDelay);
         _uiAnimation.ShowResult(isSuccess: false);
       }

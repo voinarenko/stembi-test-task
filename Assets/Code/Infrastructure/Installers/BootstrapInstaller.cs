@@ -5,8 +5,9 @@ using Code.Infrastructure.States.GameStates;
 using Code.Infrastructure.States.StateMachine;
 using Code.Services.Async;
 using Code.Services.Input;
-using Code.Services.InputProcess;
+using Code.Services.InputProcessing;
 using Code.Services.ItemsAccount;
+using Code.Services.ItemsGeneration;
 using Code.Services.Random;
 using Code.Services.StaticData;
 using Code.Services.UIAnimation;
@@ -20,7 +21,7 @@ namespace Code.Infrastructure.Installers
 
     public override void InstallBindings()
     {
-      BindInputService();
+      BindInputServices();
       BindInfrastructureServices();
       BindCommonServices();
       BindGameplayServices();
@@ -32,8 +33,11 @@ namespace Code.Infrastructure.Installers
       BindUIServices();
     }
 
-    private void BindInputService() =>
+    private void BindInputServices()
+    {
       Container.Bind<IInputService>().To<InputService>().AsSingle();
+      Container.Bind<IInputProcessingService>().To<InputProcessingService>().AsSingle();
+    }
 
     private void BindInfrastructureServices() =>
       Container.BindInterfacesTo<BootstrapInstaller>().FromInstance(this).AsSingle();
@@ -70,8 +74,8 @@ namespace Code.Infrastructure.Installers
 
     private void BindItemsServices()
     {
-      Container.Bind<IInputProcessService>().To<InputProcessService>().AsSingle();
       Container.Bind<IItemsAccountService>().To<ItemsAccountingService>().AsSingle();
+      Container.Bind<IItemGenerationService>().To<ItemGenerationService>().AsSingle();
     }
 
     public void Initialize() =>

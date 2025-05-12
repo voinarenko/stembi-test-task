@@ -1,6 +1,6 @@
 using Code.Infrastructure.Factory;
 using Code.MonoBehaviours;
-using Code.Services.InputProcess;
+using Code.Services.InputProcessing;
 using Code.Services.ItemsAccount;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,14 +16,14 @@ namespace Code.Infrastructure.Installers
     [SerializeField] private List<Slot> _slots;
     [SerializeField] private Transform _disabledItems;
     private IGameFactory _gameFactory;
-    private IInputProcessService _inputProcess;
+    private IInputProcessingService _inputProcessing;
     private IItemsAccountService _itemsAccount;
 
     [Inject]
-    private void Construct(IGameFactory gameFactory, IInputProcessService inputProcess, IItemsAccountService itemsAccount)
+    private void Construct(IGameFactory gameFactory, IInputProcessingService inputProcessing, IItemsAccountService itemsAccount)
     {
       _itemsAccount = itemsAccount;
-      _inputProcess = inputProcess;
+      _inputProcessing = inputProcessing;
       _gameFactory = gameFactory;
     }
 
@@ -32,7 +32,7 @@ namespace Code.Infrastructure.Installers
       _gameFactory.MainCamera = _camera;
       _gameFactory.LevelRoot = _levelRoot;
       _gameFactory.DropPoints = _dropPoints;
-      _inputProcess.MainCamera = _camera;
+      _inputProcessing.MainCamera = _camera;
       _itemsAccount.Slots = _slots;
       _itemsAccount.DisabledItems = _disabledItems;
     }
