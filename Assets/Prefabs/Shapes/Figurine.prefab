@@ -74,9 +74,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b61bc7b81c4528902116e5badec294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Shape: {fileID: 948861686309276675}
   _move: {fileID: 8016475533653672667}
-  _shape: {fileID: 948861686309276675}
   _icon: {fileID: 8974855053477992463}
+  _collider: {fileID: 0}
 --- !u!114 &8016475533653672667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +172,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4.54, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0

@@ -30,7 +30,7 @@ namespace Code.Infrastructure.States.GameStates
     private void OnLoad()
     {
       LoadStaticData();
-      _stateMachine.Enter<LoadLevelState, string>(LevelSceneName);
+      _stateMachine.Enter<LevelLoadState, string>(LevelSceneName);
     }
 
     private void LoadStaticData() =>

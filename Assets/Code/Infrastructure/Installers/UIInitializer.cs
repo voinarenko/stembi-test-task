@@ -1,5 +1,7 @@
+using Code.Services.ItemsAccounting;
 using Code.Services.UIAnimation;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Code.Infrastructure.Installers
@@ -10,11 +12,16 @@ namespace Code.Infrastructure.Installers
     [SerializeField] private RectTransform _topArea;
     [SerializeField] private RectTransform _bottomArea;
     [SerializeField] private RectTransform _resultScreen;
+    [SerializeField] private Button _refreshButton;
     private IUIAnimationService _uiAnimation;
+    private IItemsAccountingService _itemsAccounting;
 
     [Inject]
-    private void Construct(IUIAnimationService uiAnimation) =>
+    private void Construct(IUIAnimationService uiAnimation, IItemsAccountingService itemsAccounting)
+    {
+      _itemsAccounting = itemsAccounting;
       _uiAnimation = uiAnimation;
+    }
 
     public void Initialize()
     { 
@@ -22,6 +29,7 @@ namespace Code.Infrastructure.Installers
       _uiAnimation.TopArea = _topArea;
       _uiAnimation.BottomArea = _bottomArea;
       _uiAnimation.ResultScreen = _resultScreen;
+      _itemsAccounting.RefreshButton = _refreshButton;
     }
   }
 }

@@ -23,7 +23,6 @@ MonoBehaviour:
   - {fileID: 925270148132088355, guid: bcbea287bab9f7241a032f56d1401d26, type: 3}
   - {fileID: 925270148132088355, guid: def10fd148fc28b4a81af03be12c34e3, type: 3}
   - {fileID: 925270148132088355, guid: 11128362e7f726f4ca938d329d3ec7c4, type: 3}
-  - {fileID: 925270148132088355, guid: 70019c049eb1d7347892470c387c6867, type: 3}
   JarPrefab: {fileID: 5276037450698435035, guid: 7d85e905f645ff7468bd22d6f980840a, type: 3}
   ShapeScale: {x: 0.335, y: 0.335, z: 0.335}
   Icons:

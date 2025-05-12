@@ -68,7 +68,7 @@ namespace Code.Infrastructure.Installers
     private void BindGameStates()
     {
       Container.BindInterfacesAndSelfTo<BootstrapState>().AsSingle();
-      Container.BindInterfacesAndSelfTo<LoadLevelState>().AsSingle();
+      Container.BindInterfacesAndSelfTo<LevelLoadState>().AsSingle();
       Container.BindInterfacesAndSelfTo<LevelLoopState>().AsSingle();
     }
 

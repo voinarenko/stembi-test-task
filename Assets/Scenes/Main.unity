@@ -281,6 +281,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 237795683}
+--- !u!114 &265175545 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5014655044968951569, guid: e8f6eb2398a01d345b3955395cca9b34, type: 3}
+  m_PrefabInstance: {fileID: 2028041312120568813}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &414692886
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -491,6 +502,7 @@ MonoBehaviour:
   _topArea: {fileID: 2054101257}
   _bottomArea: {fileID: 758054456}
   _resultScreen: {fileID: 1188853677}
+  _refreshButton: {fileID: 265175545}
 --- !u!114 &446934979
 MonoBehaviour:
   m_ObjectHideFlags: 0

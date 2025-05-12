@@ -12,9 +12,10 @@ namespace Code.Infrastructure.Factory
     Camera MainCamera { get; set; }
     Transform LevelRoot { get; set; }
     List<Transform> DropPoints { get; set; }
+    void Init(LevelStaticData data);
     Jar CreateJar(GameObject prefab);
 
-    Figurine GetFigurine(GameObject shape, Sprite icon, Color color, Vector3 shapeScale, Vector3 iconScale,
+    Figurine GetFigurine(LevelStaticData data, ImprintKey key, Vector3 shapeScale, Vector3 iconScale,
       Transform container);
 
     void ReturnFigurine(Figurine figurine);

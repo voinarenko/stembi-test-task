@@ -11,20 +11,22 @@ namespace Code.Services.ItemsGeneration
   {
     private const int Match = 3;
     private readonly IRandomService _random;
-    
+
     public ItemGenerationService(IRandomService random) =>
       _random = random;
-    
-    public List<Imprint> GenerateRandomFigurineList(LevelStaticData data)
+
+    public List<ImprintKey> GenerateRandomFigurineKeys(LevelStaticData data)
     {
-      var allCombinations = (from shape in data.Shapes
-        from color in data.Colors
-        from icon in data.Icons
-        select new Imprint(shape, icon, color)).ToList();
+      var allCombinations = new List<ImprintKey>();
+
+      for (var s = 0; s < data.Shapes.Count; s++)
+      for (var c = 0; c < data.Colors.Count; c++)
+      for (var i = 0; i < data.Icons.Count; i++)
+        allCombinations.Add(new ImprintKey(s, i, c));
 
       Shuffle(allCombinations);
 
-      var result = new List<Imprint>();
+      var result = new List<ImprintKey>();
       var tripletCount = data.TotalFigurines / Match;
       var remainder = data.TotalFigurines % Match;
 
@@ -46,53 +48,53 @@ namespace Code.Services.ItemsGeneration
       return result;
     }
     
-    public List<Imprint> RefreshFigurines(LevelStaticData data, List<Figurine> activeFigurines, int figurinesCount)
+    public List<ImprintKey> GenerateRefreshedFigurineKeys(LevelStaticData data, List<Figurine> activeFigurines, int figurinesCount)
     {
-      var newImprints = new List<Imprint>();
+      var newKeys = new List<ImprintKey>();
 
       var activeCounts = activeFigurines
-        .GroupBy(f => f.Data)
+        .GroupBy(f => f.DataKey)
         .ToDictionary(g => g.Key, g => g.Count());
 
-      foreach (var (imprint, currentCount) in activeCounts)
+      foreach (var (key, count) in activeCounts)
       {
-        var remainder = currentCount % Match;
+        var remainder = count % Match;
         var toAdd = remainder == 0 ? 0 : Match - remainder;
 
-        for (var k = 0; k < toAdd; k++)
-          newImprints.Add(imprint);
+        for (var i = 0; i < toAdd; i++)
+          newKeys.Add(key);
       }
 
-      var neededCount = figurinesCount - newImprints.Count;
+      var needed = figurinesCount - newKeys.Count;
 
-      var allCombinations = (
-        from shape in data.Shapes
-        from color in data.Colors
-        from icon in data.Icons
-        select new Imprint(shape, icon, color)
-      ).ToList();
+      var allCombinations = new List<ImprintKey>();
+
+      for (var s = 0; s < data.Shapes.Count; s++)
+      for (var c = 0; c < data.Colors.Count; c++)
+      for (var i = 0; i < data.Icons.Count; i++)
+        allCombinations.Add(new ImprintKey(s, i, c));
 
       Shuffle(allCombinations);
 
-      var uniqueToAdd = new List<Imprint>();
+      var uniqueToAdd = new List<ImprintKey>();
+      var index = 0;
 
-      var i = 0;
-      while (uniqueToAdd.Count < neededCount)
+      while (uniqueToAdd.Count < needed)
       {
-        if (i >= allCombinations.Count)
-          i = 0;
+        if (index >= allCombinations.Count)
+          index = 0;
 
-        var imprint = allCombinations[i];
-        for (var j = 0; j < Match && uniqueToAdd.Count < neededCount; j++)
-          uniqueToAdd.Add(imprint);
+        var combo = allCombinations[index];
+        for (var j = 0; j < Match && uniqueToAdd.Count < needed; j++)
+          uniqueToAdd.Add(combo);
 
-        i++;
+        index++;
       }
 
-      newImprints.AddRange(uniqueToAdd);
-      Shuffle(newImprints);
+      newKeys.AddRange(uniqueToAdd);
+      Shuffle(newKeys);
 
-      return newImprints;
+      return newKeys;
     }
 
     private void Shuffle<T>(List<T> list)
