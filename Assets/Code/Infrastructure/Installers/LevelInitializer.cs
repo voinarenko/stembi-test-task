@@ -1,7 +1,7 @@
 using Code.Infrastructure.Factory;
 using Code.MonoBehaviours;
 using Code.Services.InputProcessing;
-using Code.Services.ItemsAccount;
+using Code.Services.ItemsAccounting;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -17,12 +17,12 @@ namespace Code.Infrastructure.Installers
     [SerializeField] private Transform _disabledItems;
     private IGameFactory _gameFactory;
     private IInputProcessingService _inputProcessing;
-    private IItemsAccountService _itemsAccount;
+    private IItemsAccountingService _itemsAccounting;
 
     [Inject]
-    private void Construct(IGameFactory gameFactory, IInputProcessingService inputProcessing, IItemsAccountService itemsAccount)
+    private void Construct(IGameFactory gameFactory, IInputProcessingService inputProcessing, IItemsAccountingService itemsAccounting)
     {
-      _itemsAccount = itemsAccount;
+      _itemsAccounting = itemsAccounting;
       _inputProcessing = inputProcessing;
       _gameFactory = gameFactory;
     }
@@ -33,8 +33,8 @@ namespace Code.Infrastructure.Installers
       _gameFactory.LevelRoot = _levelRoot;
       _gameFactory.DropPoints = _dropPoints;
       _inputProcessing.MainCamera = _camera;
-      _itemsAccount.Slots = _slots;
-      _itemsAccount.DisabledItems = _disabledItems;
+      _itemsAccounting.Slots = _slots;
+      _itemsAccounting.DisabledItems = _disabledItems;
     }
   }
 }

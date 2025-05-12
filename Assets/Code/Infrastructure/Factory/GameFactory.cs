@@ -1,9 +1,7 @@
 ﻿using Code.Data;
 using Code.MonoBehaviours;
 using Code.Services.Random;
-using Code.StaticData;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Code.Infrastructure.Factory

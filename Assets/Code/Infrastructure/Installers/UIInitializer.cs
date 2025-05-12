@@ -9,8 +9,7 @@ namespace Code.Infrastructure.Installers
     [SerializeField] private RectTransform _uiRoot;
     [SerializeField] private RectTransform _topArea;
     [SerializeField] private RectTransform _bottomArea;
-    [SerializeField] private RectTransform _SuccessScreen;
-    [SerializeField] private RectTransform _FailureScreen;
+    [SerializeField] private RectTransform _resultScreen;
     private IUIAnimationService _uiAnimation;
 
     [Inject]
@@ -22,8 +21,7 @@ namespace Code.Infrastructure.Installers
       _uiAnimation.UiRoot = _uiRoot;
       _uiAnimation.TopArea = _topArea;
       _uiAnimation.BottomArea = _bottomArea;
-      _uiAnimation.SuccessScreen = _SuccessScreen;
-      _uiAnimation.FailureScreen = _FailureScreen;
+      _uiAnimation.ResultScreen = _resultScreen;
     }
   }
 }

@@ -6,7 +6,7 @@ using Code.Infrastructure.States.StateMachine;
 using Code.Services.Async;
 using Code.Services.Input;
 using Code.Services.InputProcessing;
-using Code.Services.ItemsAccount;
+using Code.Services.ItemsAccounting;
 using Code.Services.ItemsGeneration;
 using Code.Services.Random;
 using Code.Services.StaticData;
@@ -74,7 +74,7 @@ namespace Code.Infrastructure.Installers
 
     private void BindItemsServices()
     {
-      Container.Bind<IItemsAccountService>().To<ItemsAccountingService>().AsSingle();
+      Container.Bind<IItemsAccountingService>().To<ItemsAccountingService>().AsSingle();
       Container.Bind<IItemGenerationService>().To<ItemGenerationService>().AsSingle();
     }
 

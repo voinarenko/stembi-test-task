@@ -1,5 +1,4 @@
-﻿using Code.Data;
-using Code.Infrastructure.Factory;
+﻿using Code.Infrastructure.Factory;
 using Code.MonoBehaviours;
 using Code.Services.Async;
 using Code.Services.InputProcessing;
@@ -9,9 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Code.Services.ItemsAccount
+namespace Code.Services.ItemsAccounting
 {
-  public class ItemsAccountingService : IItemsAccountService
+  public class ItemsAccountingService : IItemsAccountingService
   {
     public List<Slot> Slots { get; set; }
     public Transform DisabledItems { get; set; }

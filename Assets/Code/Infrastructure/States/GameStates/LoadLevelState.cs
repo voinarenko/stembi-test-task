@@ -5,7 +5,7 @@ using Code.Infrastructure.States.StatesInfrastructure;
 using Code.MonoBehaviours;
 using Code.Services.Async;
 using Code.Services.InputProcessing;
-using Code.Services.ItemsAccount;
+using Code.Services.ItemsAccounting;
 using Code.Services.ItemsGeneration;
 using Code.Services.StaticData;
 using Code.Services.UIAnimation;
@@ -25,7 +25,7 @@ namespace Code.Infrastructure.States.GameStates
     private readonly IStaticDataService _staticData;
     private readonly IAsyncService _async;
     private readonly IInputProcessingService _inputProcessing;
-    private readonly IItemsAccountService _itemsAccount;
+    private readonly IItemsAccountingService _itemsAccounting;
     private readonly IUIAnimationService _uiAnimation;
     private readonly IItemGenerationService _itemGeneration;
 
@@ -33,7 +33,7 @@ namespace Code.Infrastructure.States.GameStates
 
     public LoadLevelState(IGameStateMachine stateMachine, ISceneLoader sceneLoader, ILoadingCurtain curtain,
       IGameFactory gameFactory, IStaticDataService staticData, IAsyncService async, IInputProcessingService inputProcessing,
-      IItemsAccountService itemsAccount, IUIAnimationService uiAnimation, IItemGenerationService itemGeneration)
+      IItemsAccountingService itemsAccounting, IUIAnimationService uiAnimation, IItemGenerationService itemGeneration)
     {
       _stateMachine = stateMachine;
       _sceneLoader = sceneLoader;
@@ -42,7 +42,7 @@ namespace Code.Infrastructure.States.GameStates
       _staticData = staticData;
       _async = async;
       _inputProcessing = inputProcessing;
-      _itemsAccount = itemsAccount;
+      _itemsAccounting = itemsAccounting;
       _uiAnimation = uiAnimation;
       _itemGeneration = itemGeneration;
     }
@@ -85,7 +85,7 @@ namespace Code.Infrastructure.States.GameStates
       foreach (var figurine in figurinesList.Select(entry => _gameFactory.GetFigurine(entry.Shape, entry.Icon,
                  entry.Color, data.ShapeScale, data.IconScale, container)))
       {
-        _itemsAccount.AddFigurine(figurine);
+        _itemsAccounting.AddFigurine(figurine);
         await _async.WaitForSeconds(data.NextFigurineDelay);
       }
     }
