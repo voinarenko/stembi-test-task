@@ -12,7 +12,9 @@ namespace Code.Data
 #elif UNITY_STANDALONE
       Application.Quit();
 #elif UNITY_ANDROID
-      Application.Quit();
+      var activity =
+        new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
+      activity.Call<bool>("moveTaskToBack", true);
 #endif
     }
   }
